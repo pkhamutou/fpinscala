@@ -1,7 +1,6 @@
 package com.pkhamutou.ch2
 
 object Main extends App {
-  println("Hey")
   /*
    * Exercise 2.1
    */
@@ -15,4 +14,30 @@ object Main extends App {
   }
 
   println(fib(6))
+
+  /*
+   * Exercise 2.2
+   */
+  def isSorted[A](as: Array[A], f: (A, A) => Boolean): Boolean = {
+    @annotation.tailrec
+    def loop(index: Int): Boolean = {
+      if (index == as.length - 1) true
+      else if (!f(as(index), as(index + 1))) false
+      else loop(index + 1)
+    }
+    loop(0)
+  }
+
+  println(isSorted[Int](Array(1, 2, 3), (x, y) => x < y))
+  println(isSorted[Int](Array(9, 1), (x, y) => x < y))
+
+  /*
+   * Exercise 2.3
+   */
+  def curry1[A, B, C](f: (A, B) => C): A => (B => C) = a => f(a, _)
+  def curry2[A, B, C](f: (A, B) => C): A => (B => C) = a => b => f(a, b)
+
+  curry1[Int, Int, Int]((a, b) => a + b)
+  curry2[Int, Int, Int]((a, b) => a + b)
 }
+
