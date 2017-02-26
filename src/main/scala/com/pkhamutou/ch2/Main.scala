@@ -39,5 +39,20 @@ object Main extends App {
 
   curry1[Int, Int, Int]((a, b) => a + b)
   curry2[Int, Int, Int]((a, b) => a + b)
+
+ /*
+  * Exercise 2.4
+  */
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = (a, b) => f(a)(b)
+
+  println(uncurry[Int, Int, Int](a => b => a + b + 3)(1, 2))
+
+ /*
+  * Exercise 2.5
+  */
+  def compose[A, B, C](f: B => C, g: A => B): A => C = a => f(g(a))
+  
+  println(compose[Int, Int, Int](f => f + 1, g => g + 3)(1))
+
 }
 
