@@ -13,6 +13,16 @@ object Main extends App {
       if (as.isEmpty) Nil
       else Cons(as.head, apply(as.tail: _*))
 
+    def foldRight[A, B](xs: List[A], z: B)(f: (A, B) => B): B = xs match {
+      case Nil => z
+      case Cons(x, t) => f(x, foldRight(t, z)(f))
+    }
+
+    def append[A](a1: List[A], a2: List[A]): List[A] = a1 match {
+      case Nil => a2
+      case Cons(h, t) => Cons(h, append(t, a2))
+    }
+
 
     /*
      * Exercise 3.2
@@ -22,7 +32,6 @@ object Main extends App {
       case Cons(_, t) => t
     }
 
-
     /*
      * Exercise 3.3
      */
@@ -30,7 +39,6 @@ object Main extends App {
       case Nil => sys.error("empty list")
       case Cons(_, t) => Cons(x, t)
     }
-
 
     /*
      * Exercise 3.4
@@ -53,6 +61,16 @@ object Main extends App {
       case Cons(h, t) if f(h) => dropWhileF(t)(f)
       case _ => xs
     }
+
+    /*
+     * Exercise 3.6
+     */
+    def init[A](xs: List[A]): List[A] = xs match {
+      case Nil => sys.error("empty list")
+      case Cons(_, Nil) => Nil
+      case Cons(h, t) => Cons(h, init(t))
+    }
+
   }
 
   val xs = List(1, 2, 3, 4)
@@ -62,5 +80,8 @@ object Main extends App {
   println(List.drop(xs, 4))
   println(List.dropWhile[Int](xs, x => x < 3))
   println(List.dropWhileF(xs)(x => x < 3))
+
+  println(List.foldRight(xs, 0)((x, y) => x + y))
+  println(List.init(xs))
 
 }
