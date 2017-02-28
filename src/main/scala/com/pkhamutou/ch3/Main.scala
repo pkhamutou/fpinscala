@@ -115,6 +115,23 @@ object Main extends App {
     def reverse2[A](xs: List[A]): List[A] =
       foldLeft(xs, Nil: List[A])((acc, h) => Cons(h, acc))
 
+    /*
+     * Exercise 3.13
+     */
+    def foldRight2[A, B](xs: List[A], z: B)(f: (A, B) => B): B =
+      foldLeft(reverse2(xs), z)((b, a) => f(a, b))
+
+    def foldLeft2[A, B](xs: List[A], z: B)(f: (B, A) => B): B =
+      foldRight(reverse2(xs), z)((a,  b) => f(b, a))
+
+    /*
+     * Exercise 3.14
+     */
+    def append2[A](xs: List[A], ys: List[A]): List[A] =
+      foldLeft(reverse2(xs), ys)((l, e) => Cons(e, l))
+
+    def append3[A](xs: List[A], ys: List[A]): List[A] =
+      foldRight(xs, ys)((e, l) => Cons(e, l))
   }
 
   val xs = List(1, 2, 3, 4)
@@ -138,5 +155,13 @@ object Main extends App {
 
   println(List.reverse(xs))
   println(List.reverse2(xs))
+  println("---------")
+  println(List.foldRight2(xs, Nil: List[Int])((x, y) => Cons(x, y)))
+  println(List.foldLeft2(xs, Nil: List[Int])((y, x) => Cons(x, y)))
+  println("---------")
+
+  println(List.append2(xs, List(9, 2)))
+  println(List.append3(xs, List(9, 2)))
 
 }
+
