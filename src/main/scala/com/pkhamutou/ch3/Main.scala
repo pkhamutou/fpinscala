@@ -85,6 +85,36 @@ object Main extends App {
       case Cons(h, t) => foldLeft(t, f(z, h))(f)
     }
 
+    /*
+     * Exercise 3.11
+     */
+    def sum3(xs: List[Int]): Int = xs match {
+      case Nil => sys.error("empty list")
+      case _ => foldLeft(xs, 0)(_ + _)
+    }
+
+    def product3(xs: List[Double]): Double = xs match {
+      case Nil => sys.error("empty list")
+      case _ => foldLeft(xs, 1.0)(_ * _)
+    }
+
+    def length2[A](xs: List[A]): Int =
+      foldLeft(xs, 0)((x, _) => x + 1)
+
+    /*
+     * Exercise 3.12
+     */
+    def reverse[A](xs: List[A]): List[A] = {
+      def loop(xs: List[A], rev: List[A]): List[A] = xs match {
+        case Nil => rev
+        case Cons(h, t) => loop(t, Cons(h, rev))
+      }
+      loop(xs, Nil: List[A])
+    }
+
+    def reverse2[A](xs: List[A]): List[A] =
+      foldLeft(xs, Nil: List[A])((acc, h) => Cons(h, acc))
+
   }
 
   val xs = List(1, 2, 3, 4)
@@ -101,5 +131,12 @@ object Main extends App {
   println(List.length(xs))
 
   println(List.foldLeft(xs, 0)((x, y) => x + y))
+
+  println(List.sum3(xs))
+  println(List.product3(List(1.0, 2.0)))
+  println(List.length2(xs))
+
+  println(List.reverse(xs))
+  println(List.reverse2(xs))
 
 }
