@@ -141,6 +141,42 @@ object Main extends App {
 
     def concat2[A](xss: List[List[A]]): List[A] =
       foldRight(xss, Nil: List[A])(append3)
+    /*
+     * Exercise 3.16
+     */
+    def plusOne(xs: List[Int]): List[Int] =
+      foldRight(xs, Nil: List[Int])((h, t) => Cons(h + 1, t))
+
+    def plusOne2(xs: List[Int]): List[Int] = xs match {
+      case Nil => Nil
+      case Cons(h, t) => Cons[Int](h + 1, plusOne2(t))
+    }
+
+    /*
+     * Exercise 3.17
+     */
+    def d2s(xs: List[Double]): List[String] =
+      foldRight(xs, Nil: List[String])((h, t) => Cons(h.toString, t))
+
+    /*
+     * Exercise 3.18
+     */
+    def map[A, B](xs: List[A])(f: A => B): List[B] =
+      foldRight(xs, Nil: List[B])((h, t) => Cons(f(h), t))
+
+    def mapM[A, B](xs: List[A])(f: A => B): List[B] = {
+      var buf: List[B] = Nil: List[B]
+
+      def loop(xs: List[A]): Unit = xs match {
+        case Nil => ()
+        case Cons(h, t) =>
+          buf = Cons(f(h), buf)
+          loop(t)
+      }
+
+      loop(xs)
+      buf
+    }
 
   }
 
@@ -176,5 +212,14 @@ object Main extends App {
   println("----------------------")
   println(List.concat(List(xs, xs, xs)))
   println(List.concat2(List(xs, xs, xs)))
+
+
+  println("----------------------")
+
+  println(List.plusOne(xs))
+  println(List.d2s(List(1.0, 2.0, 3.0)))
+
+  println("----------------------")
+  println(List.map(xs)(_ + 2))
 }
 
