@@ -71,6 +71,20 @@ object Main extends App {
       case Cons(h, t) => Cons(h, init(t))
     }
 
+    /*
+     * Exercise 3.9
+     */
+    def length[A](xs: List[A]): Int =
+      foldRight(xs, 0)((_, x) => x + 1)
+
+    /*
+     * Exercise 3.10
+     */
+    def foldLeft[A, B](xs: List[A], z: B)(f: (B, A) => B): B = xs match {
+      case Nil => z
+      case Cons(h, t) => foldLeft(t, f(z, h))(f)
+    }
+
   }
 
   val xs = List(1, 2, 3, 4)
@@ -83,5 +97,9 @@ object Main extends App {
 
   println(List.foldRight(xs, 0)((x, y) => x + y))
   println(List.init(xs))
+
+  println(List.length(xs))
+
+  println(List.foldLeft(xs, 0)((x, y) => x + y))
 
 }
