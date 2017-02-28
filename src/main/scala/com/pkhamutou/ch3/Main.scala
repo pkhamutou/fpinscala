@@ -174,52 +174,62 @@ object Main extends App {
           loop(t)
       }
 
-      loop(xs)
+      loop(reverse2(xs))
+      buf
+    }
+    /*
+     * Exercise 3.19
+     */
+    def filter[A](xs: List[A])(f: A => Boolean): List[A] = xs match {
+      case Nil => Nil
+      case Cons(h, t) if !f(h) => Cons(h, filter(t)(f))
+      case Cons(_, t) => filter(t)(f)
+    }
+
+    def filterM[A](xs: List[A])(f: A => Boolean): List[A] = {
+      var buf: List[A] = Nil: List[A]
+
+      def loop(xs: List[A]): Unit = xs match {
+        case Nil => ()
+        case Cons(h, t) =>
+          if (!f(h)) buf = Cons(h, buf)
+          loop(t)
+      }
+
+      loop(reverse2(xs))
       buf
     }
 
+    /*
+     * Exercise 3.20
+     */
+    def flatMap[A, B](xs: List[A])(f: A => List[B]): List[B] =
+      concat2(map(xs)(f))
+
+    /*
+     * Exercise 3.21
+     */
+    def filterFM[A](xs: List[A])(f: A => Boolean): List[A] =
+      flatMap(xs)(x => if (f(x)) List(x) else Nil)
+
+    /*
+     * Exercise 3.22
+     */
+    def sumValues(xs: List[Int], ys: List[Int]): List[Int] = (xs, ys) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, sumValues(t1, t2))
+    }
+    /*
+     * Exercise 3.23
+     */
+    def zipWith[A](xs: List[A], ys: List[A])(f: (A, A) => A): List[A] = (xs, ys) match {
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
+    }
   }
 
-  val xs = List(1, 2, 3, 4)
-
-  println(List.tail(xs))
-  println(List.setHead(xs, 9))
-  println(List.drop(xs, 4))
-  println(List.dropWhile[Int](xs, x => x < 3))
-  println(List.dropWhileF(xs)(x => x < 3))
-
-  println(List.foldRight(xs, 0)((x, y) => x + y))
-  println(List.init(xs))
-
-  println(List.length(xs))
-
-  println(List.foldLeft(xs, 0)((x, y) => x + y))
-
-  println(List.sum3(xs))
-  println(List.product3(List(1.0, 2.0)))
-  println(List.length2(xs))
-
-  println(List.reverse(xs))
-  println(List.reverse2(xs))
-  println("---------")
-  println(List.foldRight2(xs, Nil: List[Int])((x, y) => Cons(x, y)))
-  println(List.foldLeft2(xs, Nil: List[Int])((y, x) => Cons(x, y)))
-  println("---------")
-
-  println(List.append2(xs, List(9, 2)))
-  println(List.append3(xs, List(9, 2)))
-
-  println("----------------------")
-  println(List.concat(List(xs, xs, xs)))
-  println(List.concat2(List(xs, xs, xs)))
-
-
-  println("----------------------")
-
-  println(List.plusOne(xs))
-  println(List.d2s(List(1.0, 2.0, 3.0)))
-
-  println("----------------------")
-  println(List.map(xs)(_ + 2))
+  Helper.print22_23
 }
 
