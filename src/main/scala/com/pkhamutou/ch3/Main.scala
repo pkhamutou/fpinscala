@@ -132,6 +132,16 @@ object Main extends App {
 
     def append3[A](xs: List[A], ys: List[A]): List[A] =
       foldRight(xs, ys)((e, l) => Cons(e, l))
+
+    /*
+     * Exercise 3.15
+     */
+    def concat[A](xss: List[List[A]]): List[A] =
+      foldRight(xss, Nil: List[A])((xs, y) => foldRight(xs, y)((h, t) => Cons(h, t)))
+
+    def concat2[A](xss: List[List[A]]): List[A] =
+      foldRight(xss, Nil: List[A])(append3)
+
   }
 
   val xs = List(1, 2, 3, 4)
@@ -163,5 +173,8 @@ object Main extends App {
   println(List.append2(xs, List(9, 2)))
   println(List.append3(xs, List(9, 2)))
 
+  println("----------------------")
+  println(List.concat(List(xs, xs, xs)))
+  println(List.concat2(List(xs, xs, xs)))
 }
 
