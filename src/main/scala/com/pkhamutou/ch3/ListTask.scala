@@ -1,6 +1,6 @@
 package com.pkhamutou.ch3
 
-object Main extends App {
+object ListTask extends App {
 
   sealed trait List[+A]
 
@@ -220,6 +220,7 @@ object Main extends App {
       case (_, Nil) => Nil
       case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, sumValues(t1, t2))
     }
+
     /*
      * Exercise 3.23
      */
@@ -228,8 +229,27 @@ object Main extends App {
       case (_, Nil) => Nil
       case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zipWith(t1, t2)(f))
     }
+
+    /*
+     * Exercise 3.24
+     */
+    @annotation.tailrec
+    def startsWith[A](xs: List[A], prefix: List[A]): Boolean = (xs, prefix) match {
+      case (_, Nil) => true
+      case (Cons(h, t), Cons(h2, t2)) if h == h2 => startsWith(t, t2)
+      case _ => false
+    }
+
+    @annotation.tailrec
+    def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = sup match {
+      case Nil => sub == Nil
+      case _ if startsWith(sup, sub) => true
+      case Cons(_, t) => hasSubsequence(t, sub)
+    }
   }
 
-  Helper.print22_23
+  val xs = List(1, 2, 3, 4)
+  val ys = List(1, 2)
+  println(List.hasSubsequence(xs, ys))
 }
 

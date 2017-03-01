@@ -1,6 +1,6 @@
 package com.pkhamutou.ch3
 
-import com.pkhamutou.ch3.Main._
+import com.pkhamutou.ch3.ListTask._
 
 object Helper {
   val xs = List(1, 2, 3, 4)
