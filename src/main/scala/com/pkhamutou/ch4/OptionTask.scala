@@ -21,7 +21,6 @@ object OptionTask extends App {
     def orElse[B >: A](ob: => Option[B]): Option[B] = map(Some(_)).getOrElse(ob)
 
     def filter(f: A => Boolean): Option[A] = flatMap(x => if (f(x)) Some(x) else None)
-
   }
 
   case class Some[+A](get: A) extends Option[A]
