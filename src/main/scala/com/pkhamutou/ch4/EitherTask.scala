@@ -29,7 +29,7 @@ object EitherTask extends App {
     def traverse[E, A, B](xs: List[A])(f: A => Either[E, B]): Either[E, List[B]] =
       xs.foldRight[Either[E, List[B]]](Right(Nil)) { (x, z) => f(x).map2(z)(_ :: _) }
 
-    def sequece[E, A](xs: List[Either[E, A]]): Either[E, List[A]] = traverse(xs)(x => x)
+    def sequence[E, A](xs: List[Either[E, A]]): Either[E, List[A]] = traverse(xs)(x => x)
   }
 
   case class Right[+A](value: A) extends Either[Nothing, A]
@@ -39,6 +39,6 @@ object EitherTask extends App {
   val right: Either[String, Int] = Right(123)
 
   println(Either.traverse(List(1, 2, 3))(x => Right(x)))
-  println(Either.sequece(List(right, right, left)))
+  println(Either.sequence(List(right, right, left)))
 
 }
