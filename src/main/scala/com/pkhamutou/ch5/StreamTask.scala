@@ -93,9 +93,33 @@ object StreamTask extends App {
       case _ => None
     }
 
-    def startsWith[A](xs: Stream[A]): Boolean = ???
+    def startsWith[A](xs: Stream[A]): Boolean = zipAll(xs).takeWhile(_._2.isDefined).forAll {
+      case (h1, h2) => h1 == h2
+    }
 
-    def tails: Stream[Stream[A]] = ???
+    def tails: Stream[Stream[A]] = Stream.unfold(this) {
+      case Empty => None
+      case rest => Some(rest, rest.drop(1))
+    }.append(Empty)
+
+    def hasSubsequence[A](xs: Stream[A]): Boolean = tails.exists(_.startsWith(xs))
+
+    def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] = tails.map(_.foldRight(z)(f))
+
+    def scanRight2[B](z: B)(f: (A, => B) => B): Stream[B] =
+     foldRight((z, Stream(z)))((a, p0) => {
+       // p0 is passed by-name and used in by-name args in f and cons. So use lazy val to ensure only one evaluation...
+       lazy val p1 = p0
+       val b2 = f(a, p1._1)
+       (b2, Stream.cons(b2, p1._2))
+     })._2
+
+    def find(f: A => Boolean): Option[A] = this match {
+      case Empty => None
+      case Cons(h, t) => if (f(h())) Some(h()) else t().find(f)
+    }
+
+    def find2(f: A => Boolean): Option[A] = filter(f).headOption
   }
 
   case object Empty extends Stream[Nothing]
