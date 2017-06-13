@@ -12,4 +12,10 @@ class RNGTest extends FunSuite with Matchers with GeneratorDrivenPropertyChecks 
     }
   }
 
+  test("testDouble") {
+    forAll { seed: Long =>
+      val rng = RNG.Simple(seed)
+      RNG.double(rng)._1 should (be >= 0d and be < 1d)
+    }
+  }
 }
