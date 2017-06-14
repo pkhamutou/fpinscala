@@ -44,4 +44,14 @@ object RNG {
     val (d3, s3) = double(s2)
     ((d1, d2, d3), s3)
   }
+
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    def loop(count: Int, rng: RNG, xs: List[Int]): (List[Int], RNG) = count match {
+      case 0 => (xs, rng)
+      case _ => 
+        val (r, s) = rng.nextInt
+        loop(count - 1, s, r :: xs)
+    }
+    loop(count, rng, Nil)
+  }
 }

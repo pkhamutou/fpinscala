@@ -44,4 +44,13 @@ class RNGTest extends FunSuite with Matchers with GeneratorDrivenPropertyChecks 
       d3 should (be >= 0d and be < 1d)
     }
   }
+
+  test("testInts") {
+    forAll { seed: Long =>
+      val rng = RNG.Simple(seed)
+      val ints = RNG.ints(3)(rng)
+      ints._1 should have size 3
+    }
+
+  }
 }
