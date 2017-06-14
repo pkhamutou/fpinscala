@@ -27,7 +27,21 @@ object RNG {
     (r / (Int.MaxValue.toDouble + 1), s)
   }
 
-  def intDouble(rng: RNG): ((Int, Double), RNG) = ???
-  def doubleInt(rng: RNG): ((Double, Int), RNG) = ???
-  def double3(rng: RNG): ((Double, Double, Double), RNG) = ???
+  def intDouble(rng: RNG): ((Int, Double), RNG) = {
+    val (i, s1) = rng.nextInt
+    val (d, s2) = double(s1)
+    ((i, d), s2)
+  }
+
+  def doubleInt(rng: RNG): ((Double, Int), RNG) = {
+    val (r, s) = intDouble(rng)
+    (r.swap, s)
+  }
+
+  def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+    val (d1, s1) = double(rng)
+    val (d2, s2) = double(s1)
+    val (d3, s3) = double(s2)
+    ((d1, d2, d3), s3)
+  }
 }
