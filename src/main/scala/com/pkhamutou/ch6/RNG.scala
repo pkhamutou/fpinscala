@@ -130,4 +130,9 @@ object State {
 
   def modify[S](f: S => S): State[S, Unit] = get.flatMap(s => set(f(s)))
 
+  def modify2[S](f: S => S): State[S, Unit] = for {
+    s <- get
+    _ <- set(f(s))
+  } yield ()
+
 }
