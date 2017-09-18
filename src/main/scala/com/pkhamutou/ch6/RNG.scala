@@ -38,6 +38,10 @@ object RNG {
     (r.swap, s)
   }
 
+  def boolean(rng: RNG): (Boolean, RNG) = rng.nextInt match {
+    case (i, rng2) => (i % 2 == 0, rng2)
+  }
+
   def double3(rng: RNG): ((Double, Double, Double), RNG) = {
     val (d1, s1) = double(rng)
     val (d2, s2) = double(s1)
