@@ -121,4 +121,13 @@ object Par {
     }
   }
 
+  trait Future[+A] {
+    private[parallelism] def apply(k: A => Unit): Unit
+  }
+
+  def flatMap[A,B](p: Par[A])(f: A => Par[B]): Par[B] =
+    es => new Future[B] {
+      def apply(cb: B => Unit): Unit = p(es)(a => f(a)(es)(cb))
+    }
+
 }
